@@ -547,6 +547,8 @@ int do_load_serial_bin (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 }
 
 
+extern ulong NetBootFileXferSize;
+
 static ulong load_serial_bin (ulong offset)
 {
 	int size, i;
@@ -572,6 +574,8 @@ static ulong load_serial_bin (ulong offset)
 	printf("## Total Size      = 0x%08x = %d Bytes\n", size, size);
 	sprintf(buf, "%X", size);
 	setenv("filesize", buf);
+
+    NetBootFileXferSize = (ulong)size;
 
 	return offset;
 }

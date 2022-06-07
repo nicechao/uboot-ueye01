@@ -98,7 +98,7 @@ extern unsigned int  CFG_BLOCKSIZE;
 #define CONFIG_BAUDRATE		115200	/* 115200 by default */
 #endif
 
-#define CONFIG_BOOTDELAY	1	/* autoboot after 1 seconds	*/
+#define CONFIG_BOOTDELAY	5	/* autoboot after 5 seconds	*/
 
 #define CONFIG_SERVERIP 192.168.1.2
 #define CONFIG_IPADDR 192.168.1.1

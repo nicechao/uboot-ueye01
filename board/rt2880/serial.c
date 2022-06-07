@@ -93,7 +93,7 @@ void bbu_uart_init(void)
 /* this function does not need to know the cpu and bus clock after RT3883. the clock is fix at 40Mhz */
 void serial_setbrg (void)
 {
-	//DECLARE_GLOBAL_DATA_PTR;
+	DECLARE_GLOBAL_DATA_PTR;
 	unsigned int clock_divisor = 0;
 #if defined(RT2880_FPGA_BOARD) || defined(RT2880_ASIC_BOARD) || \
     defined(RT3052_FPGA_BOARD) || defined(RT3052_ASIC_BOARD)
@@ -214,7 +214,7 @@ void serial_setbrg (void)
     defined(RT6855_ASIC_BOARD) || defined(RT6855_FPGA_BOARD) || \
     defined(MT7620_ASIC_BOARD) || defined(MT7620_FPGA_BOARD) || \
     defined(MT7628_ASIC_BOARD) || defined(MT7628_FPGA_BOARD)
-	clock_divisor = (40*1000*1000/ SERIAL_CLOCK_DIVISOR / CONFIG_BAUDRATE);
+	clock_divisor = ( ( (40*1000*1000/SERIAL_CLOCK_DIVISOR) + (gd->baudrate/2) )  / gd->baudrate);
 #elif  defined(MT7621_ASIC_BOARD) || defined(MT7621_FPGA_BOARD)
 	clock_divisor = (50 * 1000*1000/ SERIAL_CLOCK_DIVISOR / CONFIG_BAUDRATE);
 #else
@@ -264,9 +264,6 @@ void serial_putc (const char c)
 
 	TBR(CFG_RT2880_CONSOLE) = c;
 
-	/* If \n, also do \r */
-	if (c == '\n')
-		serial_putc ('\r');
 #endif
 }
 
@@ -303,7 +300,11 @@ int serial_getc (void)
 void
 serial_puts (const char *s)
 {
-	while (*s) {
-		serial_putc (*s++);
-	}
+	char c;
+	while (c=*s++) {
+		serial_putc (c);
+		/* If \n, also do \r */
+		if (c == '\n')
+			serial_putc ('\r');
+		}
 }

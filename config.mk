@@ -93,7 +93,7 @@ endif
 CONFIG_GZIP = OFF
 CONFIG_BZIP2 = OFF
 CONFIG_LZMA = ON
-CONFIG_XZ = OFF
+CONFIG_XZ = ON
 
 ##########################################################################
 
